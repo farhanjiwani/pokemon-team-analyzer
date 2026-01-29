@@ -1,3 +1,26 @@
+# Pokémon Team Analyzer
+
+Just making something to show off some Vue, Nuxt, Pinia and other developer skills.
+
+## Pending
+
+### Features
+
+- app logic
+- state management
+- routing
+- 🤷🏽‍♂️
+
+### Flossing
+
+- un-happy paths examples
+- a11y (WCAG 2.2 AA) testing
+- performance testing
+- visual polish
+- 🤷🏽‍♂️
+
+---
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

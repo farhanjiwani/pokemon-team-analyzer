@@ -25,7 +25,7 @@ const {
       >
         <div
           v-for="i in 12"
-          :key="i"
+          :key="`space-${i}`"
           class="h-48 bg-slate-200 animate-pulse rounded-xl"
         />
       </div>
@@ -45,7 +45,7 @@ const {
       <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         <article
           v-for="p in pokemonList"
-          :key="p.id"
+          :key="`pokemon-${p.id}`"
           class="p-4 bg-white rounded-xl border border-transparent hover:border-blue-500 hover:shadow-lg transition-all group"
         >
           <img

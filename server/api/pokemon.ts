@@ -20,11 +20,18 @@ export default defineEventHandler(async (): Promise<PokemonBase[]> => {
         image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
       };
     });
-  } catch {
-    // TODO: Make this more helpful
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    console.error("[PokeAPI Error]:", err.message);
+
     throw createError({
-      statusCode: 502,
-      statusMessage: "PokeAPI Connectivity Issue",
+      statusCode: err.response?.status || 502,
+      statusMessage: "Fetching Pokédex Failed",
+      data: {
+        reason:
+          "The upstream Pokémon API is currently unreachable or returned an invalid response.",
+        originalError: err.message,
+      },
     });
   }
 });
