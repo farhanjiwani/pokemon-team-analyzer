@@ -15,8 +15,7 @@ const emit = defineEmits<{
 
 // EVENT HANDLING
 function handleCardClick() {
-  console.log(`Navigating to details for ${props.pokemon.name}...`);
-  // TODO: implement routing here
+  navigateTo(`/pokemon/${props.pokemon.id}`);
 }
 </script>
 
