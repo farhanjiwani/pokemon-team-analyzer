@@ -7,25 +7,28 @@ Just making something to show off some Vue, Nuxt, Pinia and other developer skil
 ### Features
 
 - app logic
-- state management
 - routing
 - 🤷🏽‍♂️
 
-### Flossing
+### Other
 
+- add `clsx` to cleanup TailwindCSS clutter
 - un-happy paths examples
-- a11y (WCAG 2.2 AA) testing
+- a11y (WCAG 2.2 AA) audit
 - performance testing
 - visual polish
 - 🤷🏽‍♂️
 
 ---
 
-# Nuxt Minimal Starter
+## Nuxt Minimal Starter
+
+<details>
+<summary>Initial Instructions</summary>
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+### Setup
 
 Make sure to install dependencies:
 
@@ -43,7 +46,7 @@ yarn install
 bun install
 ```
 
-## Development Server
+### Development Server
 
 Start the development server on `http://localhost:3000`:
 
@@ -61,7 +64,7 @@ yarn dev
 bun run dev
 ```
 
-## Production
+### Production
 
 Build the application for production:
 
@@ -96,3 +99,5 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+</details>
