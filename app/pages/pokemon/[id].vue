@@ -1,7 +1,14 @@
 <script setup lang="ts">
-// Get ID
+// STORE
+const teamStore = useTeamStore();
+
+// Get IDs
 const route = useRoute();
 const pokemonId = route.params.id;
+const nextId = computed(() => Number(pokemonId) + 1);
+const prevId = computed(() => Math.max(1, Number(pokemonId) - 1));
+
+const isSelected = computed(() => teamStore.isInTeam(Number(pokemonId)));
 
 // Fetch data
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,10 +25,7 @@ useSeoMeta({
 
 <template>
   <div class="max-w-3xl mx-auto p-6">
-    <NuxtLink
-      to="/"
-      class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 mb-8 transition-colors"
-    >
+    <NuxtLink to="/" class="back-link" tabindex="0">
       ← Back to Pokedex
     </NuxtLink>
 
@@ -82,5 +86,39 @@ useSeoMeta({
         </div>
       </div>
     </article>
+
+    <div class="mt-8 flex justify-between">
+      <NuxtLink
+        :to="`/pokemon/${prevId}`"
+        class="px-4 py-2 bg-white rounded border"
+        tabindex="0"
+      >
+        Previous
+      </NuxtLink>
+
+      <AppButton
+        :variant="isSelected ? 'danger' : 'primary'"
+        @click="teamStore.toggleMember(pokemon)"
+      >
+        {{ isSelected ? "Remove from Team" : "Add to Team" }}
+      </AppButton>
+
+      <NuxtLink
+        :to="`/pokemon/${nextId}`"
+        class="px-4 py-2 bg-white rounded border"
+        tabindex="0"
+      >
+        Next
+      </NuxtLink>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@use "~/assets/css/_mixins.scss" as m;
+
+.back-link {
+  @apply inline-flex items-center gap-2 text-sm font-semibold text-slate-500 mb-8;
+  @include m.focus-ring();
+}
+</style>

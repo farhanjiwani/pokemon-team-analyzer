@@ -21,13 +21,15 @@ function handleCardClick() {
 
 <template>
   <article
-    class="relative p-4 rounded-xl border-2 transition-all flex flex-col items-center bg-white group"
+    tabindex="0"
+    class="pokemon-card group"
     :class="
       isSelected
         ? 'border-blue-500 shadow-lg'
         : 'border-transparent shadow-sm hover:shadow-md'
     "
     @click="handleCardClick"
+    @keydown.enter="handleCardClick"
   >
     <img
       :src="pokemon.image"
@@ -53,3 +55,12 @@ function handleCardClick() {
     </button>
   </article>
 </template>
+
+<style lang="scss" scoped>
+@use "~/assets/css/_mixins.scss" as m;
+
+.pokemon-card {
+  @apply relative p-4 rounded-xl border-2 transition-all flex flex-col items-center bg-white cursor-pointer focus:outline-none focus-within:ring-2;
+  @include m.focus-ring();
+}
+</style>

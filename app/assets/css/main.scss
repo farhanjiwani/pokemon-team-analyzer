@@ -1,5 +1,5 @@
-@use "variables" as *;
-@use "mixins" as m;
+@forward "variables";
+@forward "mixins";
 
 /**
  * Global Reset* and Base Styles

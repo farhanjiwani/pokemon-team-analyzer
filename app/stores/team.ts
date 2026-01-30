@@ -32,5 +32,25 @@ export const useTeamStore = defineStore("team", () => {
     }
   }
 
-  return { team, count, isFull, isInTeam, addPokemon, removePokemon };
+  function toggleMember(pokemon: PokemonBase) {
+    const index = team.value.findIndex((p) => p.id === pokemon.id);
+
+    if (index > -1) {
+      // Remove if exists
+      team.value.splice(index, 1);
+    } else if (!isFull.value) {
+      // Add if room exists
+      team.value.push(pokemon);
+    }
+  }
+
+  return {
+    team,
+    count,
+    isFull,
+    isInTeam,
+    addPokemon,
+    removePokemon,
+    toggleMember,
+  };
 });
