@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const teamStore = useTeamStore();
+const openSidebar = inject<() => void>("openSidebar");
 </script>
 
 <template>
@@ -12,11 +13,20 @@ const teamStore = useTeamStore();
       <h1 class="text-xl font-bold text-blue-600">PokéTeam Architect</h1>
     </NuxtLink>
 
-    <div class="text-sm font-medium">
-      Team:
-      <span :class="teamStore.isFull ? 'text-red-500' : 'text-blue-600'"
-        >{{ teamStore.count }}/6</span
-      >
+    <div
+      role="button"
+      class="cursor-pointer hover:underline"
+      tabindex="0"
+      @click="openSidebar"
+      @keydown.enter.prevent="openSidebar"
+      @keydown.space.prevent="openSidebar"
+    >
+      <div class="text-sm font-medium">
+        Team:
+        <span :class="teamStore.isFull ? 'text-red-500' : 'text-blue-600'"
+          >{{ teamStore.count }}/6</span
+        >
+      </div>
     </div>
   </header>
 </template>
