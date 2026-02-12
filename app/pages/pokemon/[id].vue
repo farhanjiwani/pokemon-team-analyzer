@@ -1,14 +1,34 @@
 <script setup lang="ts">
-// STORE
+import { capitalizeFirst } from "~/utils";
+
+type Direction = "left" | "right";
+
+// HOOKS
 const teamStore = useTeamStore();
+const route = useRoute();
+
+// META
+definePageMeta({
+  validate: async (route) => {
+    const id = Number(route.params.id);
+    // Return false to trigger 404 page
+    return !isNaN(id) && id > 0 && id <= 151;
+  },
+});
+
+const setTransition = (dir: Direction) => {
+  route.meta.pageTransition = {
+    name: `slide-${dir}`,
+    mode: "out-in",
+  };
+};
 
 // Get IDs
-const route = useRoute();
-const pokemonId = route.params.id;
-const nextId = computed(() => Number(pokemonId) + 1);
-const prevId = computed(() => Math.max(1, Number(pokemonId) - 1));
+const pokemonId = Number(route.params.id) || 0;
+const nextId = computed(() => pokemonId + 1);
+const prevId = computed(() => Math.max(1, pokemonId - 1));
 
-const isSelected = computed(() => teamStore.isInTeam(Number(pokemonId)));
+const isSelected = computed(() => teamStore.isInTeam(pokemonId));
 
 // Fetch data
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,11 +36,30 @@ const { data: pokemon, status } = await useFetch<any>(
   `https://pokeapi.co/api/v2/pokemon/${pokemonId}`,
 );
 
+// This creates a "Clean" object that matches what your Store/Card expects
+const pokemonForTeam = computed(() => {
+  if (!pokemon.value) return null;
+  return {
+    id: pokemon.value.id,
+    name: pokemon.value.name,
+    image: pokemon.value.sprites.other["official-artwork"].front_default,
+    types: pokemon.value.types,
+  };
+});
+
 // SEO helper
 useSeoMeta({
-  title: () => `${pokemon.value?.name ?? "Loading"} | PokéTeam Architect`,
+  title: () => {
+    return `${capitalizeFirst(pokemon.value?.name) ?? "Loading"} | PokéTeam Architect`;
+  },
   description: "Detailed analysis of Pokémon stats and abilities.",
 });
+
+// Actions
+const navigateWithTransition = (dir: Direction, targetId: number) => {
+  setTransition(dir);
+  navigateTo(`/pokemon/${targetId}`);
+};
 </script>
 
 <template>
@@ -70,7 +109,7 @@ useSeoMeta({
           <div class="space-y-4">
             <div v-for="stat in pokemon.stats" :key="stat.stat.name">
               <div
-                class="flex justify-between text-xs font-bold uppercase text-slate-400 mb-1"
+                class="flex justify-between text-xs font-bold uppercase text-slate-600 mb-1"
               >
                 <span>{{ stat.stat.name }}</span>
                 <span>{{ stat.base_stat }}</span>
@@ -87,29 +126,29 @@ useSeoMeta({
       </div>
     </article>
 
-    <div class="mt-8 flex justify-between">
-      <NuxtLink
-        :to="`/pokemon/${prevId}`"
-        class="px-4 py-2 bg-white rounded border"
-        tabindex="0"
+    <div class="mt-8 flex items-center justify-between gap-4">
+      <AppButton
+        :disabled="pokemonId <= 1"
+        @click="navigateWithTransition('left', prevId)"
       >
-        Previous
-      </NuxtLink>
+        &laquo; Previous
+      </AppButton>
 
       <AppButton
         :variant="isSelected ? 'danger' : 'primary'"
-        @click="teamStore.toggleMember(pokemon)"
+        class="flex-1"
+        :disabled="!pokemonForTeam"
+        @click.stop="teamStore.toggleMember(pokemonForTeam!)"
       >
         {{ isSelected ? "Remove from Team" : "Add to Team" }}
       </AppButton>
 
-      <NuxtLink
-        :to="`/pokemon/${nextId}`"
-        class="px-4 py-2 bg-white rounded border"
-        tabindex="0"
+      <AppButton
+        :disabled="pokemonId >= 151"
+        @click="navigateWithTransition('right', nextId)"
       >
-        Next
-      </NuxtLink>
+        Next &raquo;
+      </AppButton>
     </div>
   </div>
 </template>

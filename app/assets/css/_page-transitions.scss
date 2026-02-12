@@ -9,10 +9,43 @@
   transform: translateY(10px);
 }
 
+/* Slide Right (Next) */
+.slide-right-enter-from {
+  transform: translateX(50px);
+  opacity: 0;
+}
+
+.slide-right-leave-to {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
+/* Slide Left (Previous) */
+.slide-left-enter-from {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
+.slide-left-leave-to {
+  transform: translateX(50px);
+  opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .page-enter-active,
-  .page-leave-active {
+  .page-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active,
+  .slide-left-enter-active,
+  .slide-right-enter-active {
     transition: none !important;
   }
 }

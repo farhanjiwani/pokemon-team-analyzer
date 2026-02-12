@@ -27,6 +27,12 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/test-utils",
     "@pinia/nuxt",
+    [
+      "pinia-plugin-persistedstate/nuxt",
+      {
+        /* persist: true */
+      },
+    ],
   ],
 
   typescript: {

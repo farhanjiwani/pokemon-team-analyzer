@@ -39,7 +39,7 @@ function handleCardClick() {
     />
 
     <h2 class="mt-4 font-bold capitalize text-slate-800">{{ pokemon.name }}</h2>
-    <p class="text-xs text-slate-400 mb-4">#{{ pokemon.id }}</p>
+    <p class="text-xs text-slate-600 mb-4">#{{ pokemon.id }}</p>
 
     <button
       :disabled="disabled && !isSelected"

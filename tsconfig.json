@@ -10,7 +10,10 @@
       "~/*": [
         "./app/*"
       ]
-    }
+    },
+    "types": [
+      "pinia-plugin-persistedstate"
+    ]
   },
   "include": [
     ".nuxt/nuxt.d.ts",

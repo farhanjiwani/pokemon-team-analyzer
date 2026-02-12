@@ -17,6 +17,7 @@ Just making something to show off some Vue, Nuxt, Pinia and other developer skil
 - a11y (WCAG 2.2 AA) audit
 - performance testing
 - visual polish
+- GDPR/TCF Compliance Implementation
 - 🤷🏽‍♂️
 
 ---
