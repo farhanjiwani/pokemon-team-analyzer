@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
+import { useUIStore } from "./ui";
+import { capitalizeFirst } from "~/utils";
 import type { PokemonBase } from "@/server/api/pokemon";
 
 export const useTeamStore = defineStore(
   "team",
   () => {
+    const ui = useUIStore();
+
     // Reactive STATE
     const team = ref<PokemonBase[]>([]);
 
@@ -20,25 +24,40 @@ export const useTeamStore = defineStore(
 
     // ACTIONS
     function addPokemon(pokemon: PokemonBase) {
-      if (isFull.value) return;
+      if (isFull.value) {
+        ui.notify("Your team is full! Remove one first.");
+        return;
+      }
 
       if (!isInTeam(pokemon.id)) {
         team.value.push(pokemon);
+        ui.notify(`${capitalizeFirst(pokemon.name)} added to your squad.`);
       }
     }
 
-    function removePokemon(id: number): boolean {
+    function removePokemon(id: number) {
       const index = team.value.findIndex((p) => p.id === id);
       if (index > -1) {
-        team.value.splice(index, 1);
-        return true;
-      }
+        // Save for Undo
+        const removed = team.value[index] as PokemonBase;
 
-      return false;
+        // Remove
+        team.value.splice(index, 1);
+
+        // Toast w/ Undo button
+        ui.notify(`${capitalizeFirst(removed.name)} removed.`, {
+          label: "Undo",
+          callback: () => {
+            addPokemon(removed);
+          },
+        });
+      }
     }
 
     function toggleMember(pokemon: PokemonBase) {
-      if (!removePokemon(pokemon.id)) {
+      if (isInTeam(pokemon.id)) {
+        removePokemon(pokemon.id);
+      } else {
         addPokemon(pokemon);
       }
     }

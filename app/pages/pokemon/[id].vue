@@ -5,6 +5,7 @@ type Direction = "left" | "right";
 
 // HOOKS
 const teamStore = useTeamStore();
+const ui = useUIStore();
 const route = useRoute();
 
 // META
@@ -59,6 +60,10 @@ useSeoMeta({
 const navigateWithTransition = (dir: Direction, targetId: number) => {
   setTransition(dir);
   navigateTo(`/pokemon/${targetId}`);
+};
+
+const toggleTeam = () => {
+  teamStore.toggleMember(pokemonForTeam.value!);
 };
 </script>
 
@@ -138,7 +143,7 @@ const navigateWithTransition = (dir: Direction, targetId: number) => {
         :variant="isSelected ? 'danger' : 'primary'"
         class="flex-1"
         :disabled="!pokemonForTeam"
-        @click.stop="teamStore.toggleMember(pokemonForTeam!)"
+        @click.stop="toggleTeam()"
       >
         {{ isSelected ? "Remove from Team" : "Add to Team" }}
       </AppButton>

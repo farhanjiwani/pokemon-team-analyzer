@@ -30,6 +30,10 @@ const close = () => {
   });
 };
 
+const handleRemove = (id: number) => {
+  teamStore.removePokemon(id);
+};
+
 defineExpose({ open });
 
 // Context specific "Back" button
@@ -86,7 +90,7 @@ const closeButtonLabel = computed(() => {
             <button
               class="text-[10px] font-black text-red-400 hover:text-red-600 uppercase tracking-widest p-2"
               :aria-label="`Remove ${p.name} from team`"
-              @click="teamStore.removePokemon(p.id)"
+              @click="handleRemove(p.id)"
             >
               <SR_BtnSpan />
             </button>

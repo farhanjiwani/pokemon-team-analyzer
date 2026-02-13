@@ -7,7 +7,8 @@ Just making something to show off some Vue, Nuxt, Pinia and other developer skil
 ### Features
 
 - app logic
-- routing
+- history list of removed team members
+- GDPR/TCF Compliance Implementation
 - 🤷🏽‍♂️
 
 ### Other
@@ -17,7 +18,6 @@ Just making something to show off some Vue, Nuxt, Pinia and other developer skil
 - a11y (WCAG 2.2 AA) audit
 - performance testing
 - visual polish
-- GDPR/TCF Compliance Implementation
 - 🤷🏽‍♂️
 
 ---

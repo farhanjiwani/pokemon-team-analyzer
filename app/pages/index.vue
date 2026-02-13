@@ -10,16 +10,12 @@ const {
   error,
 } = await useFetch<PokemonBase[]>("/api/pokemon");
 
-// Init STORE
+// Init STORES
 const teamStore = useTeamStore();
 
 // Event Handlers
 function handleToggle(pokemon: PokemonBase) {
-  if (teamStore.isInTeam(pokemon.id)) {
-    teamStore.removePokemon(pokemon.id);
-  } else {
-    teamStore.addPokemon(pokemon);
-  }
+  teamStore.toggleMember(pokemon);
 }
 
 // SEO

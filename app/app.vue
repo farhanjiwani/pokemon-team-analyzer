@@ -18,4 +18,6 @@ provide("openSidebar", () => {
     @open="isSidebarActive = true"
     @close="isSidebarActive = false"
   />
+
+  <UpdateAnnouncer />
 </template>

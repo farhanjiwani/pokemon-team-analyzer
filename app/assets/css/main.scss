@@ -22,3 +22,11 @@ img {
 button:disabled {
   cursor: not-allowed;
 }
+
+@media (prefers-reduced-motion: reduce) {
+
+  .toast-slide-enter-active,
+  .toast-slide-leave-active {
+    transition: none !important;
+  }
+}
