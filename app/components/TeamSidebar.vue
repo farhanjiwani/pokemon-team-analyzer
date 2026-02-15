@@ -1,6 +1,17 @@
 <script setup lang="ts">
+import { POKE_SPEC_CATEGORIES } from "~/utils/constants";
+
+const specCategories = Object.keys(POKE_SPEC_CATEGORIES);
+type Attribute = keyof typeof POKE_SPEC_CATEGORIES;
+type SortOption = "date" | "name" | "id" | Attribute;
+
 const teamStore = useTeamStore();
 const route = useRoute();
+const sortBy = useCookie<SortOption>("team-sort-preference", {
+  default: () => "date",
+  maxAge: 86400 * 365, // 1 year in seconds (60x60x24x365)
+  sameSite: "strict",
+});
 
 const isOpen = ref(false);
 const closeBtn = ref<HTMLButtonElement | null>(null);
@@ -36,6 +47,34 @@ const handleRemove = (id: number) => {
 
 defineExpose({ open });
 
+const sortedTeam = computed(() => {
+  const teamCopy = [...teamStore.team];
+
+  return teamCopy.sort((a, b) => {
+    // Ascending ones
+    if (sortBy.value === "name") {
+      return a.name.localeCompare(b.name);
+    }
+    if (sortBy.value === "id") {
+      return a.id - b.id;
+    }
+
+    // Else descending ones
+    if (specCategories.includes(sortBy.value)) {
+      const statKey = sortBy.value;
+
+      // Look up stats in the cache.
+      // Falls back to 0 if the async fetch hasn't finished yet.
+      const statA = teamStore.statsCache[a.id]?.[statKey] || 0;
+      const statB = teamStore.statsCache[b.id]?.[statKey] || 0;
+
+      return statB - statA;
+    }
+
+    return 0; // Default: 'date'
+  });
+});
+
 // Context specific "Back" button
 const closeButtonLabel = computed(() => {
   return route.name === "index" ? "Back to Pokedex" : "Back to Analysis";
@@ -64,14 +103,41 @@ const closeButtonLabel = computed(() => {
       >
         <div class="flex justify-between items-center mb-8">
           <h2 id="sidebar-title" class="text-xl font-bold">Your Squad</h2>
-          <button
-            ref="closeBtn"
-            class="p-2 -mr-2 text-slate-400 hover:text-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg outline-none"
-            aria-label="Close Team Sidebar"
-            @click="close"
-          >
-            <SR_BtnSpan />
-          </button>
+
+          <div class="flex items-center gap-4">
+            <div v-if="teamStore.count > 1" class="relative">
+              <label for="sort-team" class="sr-only">Sort team by</label>
+              <select
+                id="sort-team"
+                v-model="sortBy"
+                class="text-xs border-none bg-slate-100 rounded-md py-1 pl-2 pr-6 focus:ring-2 focus:ring-blue-500 text-slate-700 font-medium cursor-pointer"
+              >
+                <optgroup label="Defaults">
+                  <option value="date">Added</option>
+                  <option value="id">PokéID #</option>
+                  <option value="name">A-Z</option>
+                </optgroup>
+                <optgroup label="Attributes">
+                  <option
+                    v-for="(cat, i) in specCategories"
+                    :key="i"
+                    :value="cat"
+                  >
+                    {{ POKE_SPEC_CATEGORIES[cat] }}
+                  </option>
+                </optgroup>
+              </select>
+            </div>
+
+            <button
+              ref="closeBtn"
+              class="p-2 -mr-2 text-slate-400 hover:text-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg outline-none"
+              aria-label="Close Team Sidebar"
+              @click="close"
+            >
+              <SR_BtnSpan />
+            </button>
+          </div>
         </div>
 
         <ul
@@ -79,14 +145,28 @@ const closeButtonLabel = computed(() => {
           class="space-y-4 overflow-y-auto flex-1 pr-2"
         >
           <li
-            v-for="p in teamStore.team"
+            v-for="p in sortedTeam"
             :key="p.id"
             class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100"
           >
             <img :src="p.image" alt="" class="w-12 h-12 object-contain" />
-            <span class="font-bold capitalize flex-1 text-sm">{{
-              p.name
-            }}</span>
+            <span class="font-bold capitalize flex-1 text-sm">
+              <span>{{ p.name }}</span>
+              <br />
+
+              <span
+                v-if="specCategories.includes(sortBy)"
+                class="text-xs text-slate-500 font-normal normal-case"
+              >
+                {{ teamStore.statsCache[p.id]?.[sortBy] || "..." }}
+
+                {{
+                  POKE_SPEC_CATEGORIES[
+                    sortBy as keyof typeof POKE_SPEC_CATEGORIES
+                  ]
+                }}
+              </span>
+            </span>
             <button
               class="text-[10px] font-black text-red-400 hover:text-red-600 uppercase tracking-widest p-2"
               :aria-label="`Remove ${p.name} from team`"

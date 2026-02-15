@@ -5,7 +5,6 @@ type Direction = "left" | "right";
 
 // HOOKS
 const teamStore = useTeamStore();
-const ui = useUIStore();
 const route = useRoute();
 
 // META
