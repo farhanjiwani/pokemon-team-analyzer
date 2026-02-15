@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { capitalizeFirst } from "~/utils";
+import type { PokeAPIDetail } from "~/types/pokemon";
 
 type Direction = "left" | "right";
 
@@ -31,8 +32,7 @@ const prevId = computed(() => Math.max(1, pokemonId - 1));
 const isSelected = computed(() => teamStore.isInTeam(pokemonId));
 
 // Fetch data
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const { data: pokemon, status } = await useFetch<any>(
+const { data: pokemon, status } = await useFetch<PokeAPIDetail>(
   `https://pokeapi.co/api/v2/pokemon/${pokemonId}`,
 );
 

@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { cn } from "~/utils";
+
 const teamStore = useTeamStore();
 const openSidebar = inject<() => void>("openSidebar");
+
+const teamSizeClass = cn(teamStore.isFull ? "text-red-500" : "text-blue-600");
 </script>
 
 <template>
@@ -23,9 +27,7 @@ const openSidebar = inject<() => void>("openSidebar");
     >
       <div class="text-sm font-medium">
         Team:
-        <span :class="teamStore.isFull ? 'text-red-500' : 'text-blue-600'"
-          >{{ teamStore.count }}/6</span
-        >
+        <span :class="teamSizeClass">{{ teamStore.count }}/6</span>
       </div>
     </div>
   </header>

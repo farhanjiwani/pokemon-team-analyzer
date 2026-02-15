@@ -1,9 +1,4 @@
-// Data contract
-export interface PokemonBase {
-  id: number;
-  name: string;
-  image: string;
-}
+import type { PokemonBase } from "~/types/pokemon";
 
 export default defineEventHandler(async (): Promise<PokemonBase[]> => {
   try {

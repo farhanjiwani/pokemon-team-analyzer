@@ -13,11 +13,11 @@ Just making something to show off some Vue, Nuxt, Pinia and other developer skil
 
 ### Other
 
-- add `clsx` to cleanup TailwindCSS clutter
 - un-happy paths examples
 - a11y (WCAG 2.2 AA) audit
 - performance testing
 - visual polish
+- tests
 - 🤷🏽‍♂️
 
 ---

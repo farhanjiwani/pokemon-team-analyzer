@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { cn } from "~/utils";
+
 defineProps<{
   variant?: "primary" | "danger";
   disabled?: boolean;
 }>();
+
+const classes = cn("app-button", variant);
 </script>
 
 <template>
-  <button :disabled="disabled" class="app-button" :class="variant">
+  <button :disabled="disabled" :class="classes">
     <slot />
   </button>
 </template>

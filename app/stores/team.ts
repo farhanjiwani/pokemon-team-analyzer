@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useUIStore } from "./ui";
 import { capitalizeFirst } from "~/utils";
-import type { PokemonBase } from "@/server/api/pokemon";
+import type { PokemonBase, PokemonStats, PokeAPIDetail } from "~/types/pokemon";
 
 // Cache type
 type PokemonStats = Record<string, number>;
@@ -33,14 +33,12 @@ export const useTeamStore = defineStore(
 
       try {
         // Non-SSR because will be called on adding a team member
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const data = await $fetch<any>(
+        const data = await $fetch<PokeAPIDetail>(
           `https://pokeapi.co/api/v2/pokemon/${id}`,
         );
 
         const statsObj: PokemonStats = {};
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data.stats.forEach((s: any) => {
+        data.stats.forEach((s) => {
           statsObj[s.stat.name] = s.base_stat;
         });
 

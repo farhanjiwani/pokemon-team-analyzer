@@ -9,5 +9,13 @@
     "Poké",
     "Pokéballs",
     "Pokédex"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "tailwindcss.classAttributes": [
+    "class",
+    "className",
+    ".*Class"
   ]
 }

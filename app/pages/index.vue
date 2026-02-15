@@ -2,8 +2,6 @@
 import { useTeamStore } from "~/stores/team";
 import type { PokemonBase } from "@/server/api/pokemon";
 
-// TODO: add clsx to clean up Tailwind clutter
-
 const {
   data: pokemonList,
   status,
@@ -28,7 +26,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="">
+  <div>
     <!-- LOADING -->
     <div
       v-if="status === 'pending'"

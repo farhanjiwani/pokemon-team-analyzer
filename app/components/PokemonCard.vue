@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { cn } from "~/utils";
 import type { PokemonBase } from "@/server/api/pokemon";
 
 // PROPS
@@ -17,17 +18,26 @@ const emit = defineEmits<{
 function handleCardClick() {
   navigateTo(`/pokemon/${props.pokemon.id}`);
 }
+
+const pokeCardClass = cn(
+  "pokemon-card group",
+  props.isSelected
+    ? "border-blue-500 shadow-lg"
+    : "border-transparent shadow-sm hover:shadow-md",
+);
+
+const addRemoveBtnClass = cn(
+  "w-full py-2 px-4 rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200",
+  props.isSelected
+    ? "bg-red-50 text-red-600 hover:bg-red-100"
+    : "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-100 disabled:text-slate-400",
+);
 </script>
 
 <template>
   <article
     tabindex="0"
-    class="pokemon-card group"
-    :class="
-      isSelected
-        ? 'border-blue-500 shadow-lg'
-        : 'border-transparent shadow-sm hover:shadow-md'
-    "
+    :class="pokeCardClass"
     @click="handleCardClick"
     @keydown.enter="handleCardClick"
   >
@@ -43,12 +53,7 @@ function handleCardClick() {
 
     <button
       :disabled="disabled && !isSelected"
-      class="w-full py-2 px-4 rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200"
-      :class="
-        isSelected
-          ? 'bg-red-50 text-red-600 hover:bg-red-100'
-          : 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-100 disabled:text-slate-400'
-      "
+      :class="addRemoveBtnClass"
       @click.stop="emit('toggle', pokemon)"
     >
       {{ isSelected ? "Remove" : "Add to Team" }}
