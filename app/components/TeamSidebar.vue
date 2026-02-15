@@ -86,7 +86,7 @@ const closeButtonLabel = computed(() => {
     <Transition name="fade">
       <div
         v-if="isOpen"
-        class="fixed inset-0 bg-slate-900/40 backdrop-blur-[2px] z-40"
+        class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px]"
         @click="close"
       />
     </Transition>
@@ -95,13 +95,13 @@ const closeButtonLabel = computed(() => {
       <div
         v-if="isOpen"
         id="team-sidebar"
-        class="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 p-6 flex flex-col"
+        class="fixed right-0 top-0 z-50 flex h-full w-80 flex-col bg-white p-6 shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-labelledby="sidebar-title"
         @keypress.esc="close"
       >
-        <div class="flex justify-between items-center mb-8">
+        <div class="mb-8 flex items-center justify-between">
           <h2 id="sidebar-title" class="text-xl font-bold">Your Squad</h2>
 
           <div class="flex items-center gap-4">
@@ -110,7 +110,7 @@ const closeButtonLabel = computed(() => {
               <select
                 id="sort-team"
                 v-model="sortBy"
-                class="text-xs border-none bg-slate-100 rounded-md py-1 pl-2 pr-6 focus:ring-2 focus:ring-blue-500 text-slate-700 font-medium cursor-pointer"
+                class="cursor-pointer rounded-md border-none bg-slate-100 py-1 pl-2 pr-6 text-xs font-medium text-slate-700 focus:ring-2 focus:ring-blue-500"
               >
                 <optgroup label="Defaults">
                   <option value="date">Added</option>
@@ -131,7 +131,7 @@ const closeButtonLabel = computed(() => {
 
             <button
               ref="closeBtn"
-              class="p-2 -mr-2 text-slate-400 hover:text-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg outline-none"
+              class="-mr-2 rounded-lg p-2 text-slate-400 outline-none hover:text-slate-600 focus:ring-2 focus:ring-blue-500"
               aria-label="Close Team Sidebar"
               @click="close"
             >
@@ -142,21 +142,21 @@ const closeButtonLabel = computed(() => {
 
         <ul
           v-if="teamStore.count > 0"
-          class="space-y-4 overflow-y-auto flex-1 pr-2"
+          class="flex-1 space-y-4 overflow-y-auto pr-2"
         >
           <li
             v-for="p in sortedTeam"
             :key="p.id"
-            class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100"
+            class="flex items-center gap-4 rounded-xl border border-slate-100 bg-slate-50 p-3"
           >
-            <img :src="p.image" alt="" class="w-12 h-12 object-contain" />
-            <span class="font-bold capitalize flex-1 text-sm">
+            <img :src="p.image" alt="" class="size-12 object-contain" />
+            <span class="flex-1 text-sm font-bold capitalize">
               <span>{{ p.name }}</span>
               <br />
 
               <span
                 v-if="specCategories.includes(sortBy)"
-                class="text-xs text-slate-500 font-normal normal-case"
+                class="text-xs font-normal normal-case text-slate-500"
               >
                 {{ teamStore.statsCache[p.id]?.[sortBy] || "..." }}
 
@@ -168,7 +168,7 @@ const closeButtonLabel = computed(() => {
               </span>
             </span>
             <button
-              class="text-[10px] font-black text-red-400 hover:text-red-600 uppercase tracking-widest p-2"
+              class="p-2 text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-600"
               :aria-label="`Remove ${p.name} from team`"
               @click="handleRemove(p.id)"
             >
@@ -179,9 +179,9 @@ const closeButtonLabel = computed(() => {
 
         <div
           v-else
-          class="flex-1 flex flex-col items-center justify-center text-slate-400 text-center"
+          class="flex flex-1 flex-col items-center justify-center text-center text-slate-400"
         >
-          <p class="italic text-sm">
+          <p class="text-sm italic">
             Your team is empty!<br />Go catch some Pokémon.
           </p>
         </div>
@@ -199,6 +199,7 @@ const closeButtonLabel = computed(() => {
 .fade-leave-active {
   transition: opacity 0.3s;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
@@ -208,6 +209,7 @@ const closeButtonLabel = computed(() => {
 .slide-rtl-leave-active {
   transition: transform 0.3s ease-out;
 }
+
 .slide-rtl-enter-from,
 .slide-rtl-leave-to {
   transform: translateX(100%);

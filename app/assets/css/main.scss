@@ -8,7 +8,7 @@
  *   - Preflight includes .sr-only for screen-reader-only text 💪🏽
  */
 html {
-  font-family: 'Inter', sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 body {
@@ -24,7 +24,6 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .toast-slide-enter-active,
   .toast-slide-leave-active {
     transition: none !important;

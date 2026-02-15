@@ -12,7 +12,11 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "npx nuxi typecheck"
+    "typecheck": "npx nuxi typecheck",
+    "lint:js": "eslint --ext .js,.ts,.vue .",
+    "lint:css": "stylelint \"**/*.{vue,scss,css}\"",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "eslint --ext .js,.ts,.vue . --fix && stylelint \"**/*.{vue,scss,css}\" --fix"
   },
   "devDependencies": {
     "@nuxt/a11y": "^1.0.0-alpha.1",
@@ -31,7 +35,12 @@
     "nuxt": "^4.3.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
+    "postcss-html": "^1.8.1",
     "sass": "^1.97.3",
+    "stylelint": "^17.3.0",
+    "stylelint-config-recommended-vue": "^1.6.1",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-config-tailwindcss": "^1.0.1",
     "vue": "^3.5.27",
     "vue-router": "^4.6.4",
     "vue-tsc": "^3.2.4"

@@ -4,14 +4,16 @@ import { cn } from "~/utils";
 const teamStore = useTeamStore();
 const openSidebar = inject<() => void>("openSidebar");
 
-const teamSizeClass = cn(teamStore.isFull ? "text-red-500" : "text-blue-600");
+const teamSizeClass = computed(() =>
+  cn(teamStore.isFull ? "text-red-500" : "text-blue-600"),
+);
 </script>
 
 <template>
   <header class="the-header">
     <NuxtLink
       to="/"
-      class="focus:outline-none focus:ring-2 rounded"
+      class="rounded focus:outline-none focus:ring-2"
       tabindex="0"
     >
       <h1 class="text-xl font-bold text-blue-600">PokéTeam Architect</h1>

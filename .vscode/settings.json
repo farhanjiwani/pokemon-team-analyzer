@@ -3,12 +3,14 @@
   "scss.lint.unknownAtRules": "ignore",
   "cSpell.words": [
     "Eevee",
+    "nuxi",
     "Nuxt",
     "nuxtjs",
     "persistedstate",
     "Poké",
     "Pokéballs",
-    "Pokédex"
+    "Pokédex",
+    "unhead"
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"

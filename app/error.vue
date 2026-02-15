@@ -17,14 +17,14 @@ const handleError = () => clearError({ redirect: "/" });
 
 <template>
   <div
-    class="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-center"
+    class="flex min-h-screen items-center justify-center bg-slate-50 p-6 text-center"
   >
     <div class="max-w-md">
-      <div class="text-9xl font-black text-slate-200 mb-4">
+      <div class="mb-4 text-9xl font-black text-slate-200">
         {{ error.statusCode }}
       </div>
 
-      <picture class="block mb-8">
+      <picture class="mb-8 block">
         <source
           srcset="/img/404.webp 1x, /img/404__2x.webp 2x"
           type="image/webp"
@@ -32,14 +32,14 @@ const handleError = () => clearError({ redirect: "/" });
         <img
           src="/img/404.webp"
           alt="Screenshot of Game Boy screen where Eevee encounters Super Nerd"
-          class="mx-auto w-64 h-auto"
+          class="mx-auto h-auto w-64"
         />
       </picture>
 
-      <h1 class="text-3xl font-bold text-slate-900 mb-2">
+      <h1 class="mb-2 text-3xl font-bold text-slate-900">
         Wild ERROR Appeared!
       </h1>
-      <p class="text-slate-600 mb-8">
+      <p class="mb-8 text-slate-600">
         {{ error.message || "The Pokémon fled." }}
       </p>
 

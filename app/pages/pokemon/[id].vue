@@ -67,7 +67,7 @@ const toggleTeam = () => {
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto p-6">
+  <div class="mx-auto max-w-3xl p-6">
     <NuxtLink to="/" class="back-link" tabindex="0">
       ← Back to Pokedex
     </NuxtLink>
@@ -75,36 +75,36 @@ const toggleTeam = () => {
     <!-- LOADING -->
     <div
       v-if="status === 'pending'"
-      class="h-96 bg-white animate-pulse rounded-3xl"
+      class="h-96 animate-pulse rounded-3xl bg-white"
     />
 
     <!-- SUCCESS -->
     <article
       v-else-if="pokemon"
-      class="bg-white rounded-3xl p-8 shadow-xl border border-slate-100"
+      class="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl"
     >
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div class="bg-slate-50 rounded-2xl p-4">
+      <div class="grid items-center gap-8 md:grid-cols-2">
+        <div class="rounded-2xl bg-slate-50 p-4">
           <img
             :src="pokemon.sprites.other['official-artwork'].front_default"
             :alt="pokemon.name"
-            class="w-full h-auto drop-shadow-2xl"
+            class="h-auto w-full drop-shadow-2xl"
           />
         </div>
 
         <div>
-          <span class="text-blue-600 font-mono font-bold"
+          <span class="font-mono font-bold text-blue-600"
             >#{{ pokemon.id }}</span
           >
-          <h1 class="text-4xl font-black capitalize text-slate-900 mb-4">
+          <h1 class="mb-4 text-4xl font-black capitalize text-slate-900">
             {{ pokemon.name }}
           </h1>
 
-          <div class="flex gap-2 mb-6">
+          <div class="mb-6 flex gap-2">
             <span
               v-for="type in pokemon.types"
               :key="type.type.name"
-              class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-600"
+              class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-slate-600"
             >
               {{ type.type.name }}
             </span>
@@ -113,12 +113,12 @@ const toggleTeam = () => {
           <div class="space-y-4">
             <div v-for="stat in pokemon.stats" :key="stat.stat.name">
               <div
-                class="flex justify-between text-xs font-bold uppercase text-slate-600 mb-1"
+                class="mb-1 flex justify-between text-xs font-bold uppercase text-slate-600"
               >
                 <span>{{ stat.stat.name }}</span>
                 <span>{{ stat.base_stat }}</span>
               </div>
-              <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-2 overflow-hidden rounded-full bg-slate-100">
                 <div
                   class="h-full bg-blue-500 transition-all duration-1000"
                   :style="{ width: `${(stat.base_stat / 255) * 100}%` }"
@@ -162,6 +162,6 @@ const toggleTeam = () => {
 
 .back-link {
   @apply inline-flex items-center gap-2 text-sm font-semibold text-slate-500 mb-8;
-  @include m.focus-ring();
+  @include m.focus-ring;
 }
 </style>

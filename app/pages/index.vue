@@ -30,12 +30,12 @@ useSeoMeta({
     <!-- LOADING -->
     <div
       v-if="status === 'pending'"
-      class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
+      class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6"
     >
       <div
         v-for="i in 12"
         :key="`space-${i}`"
-        class="h-64 bg-slate-200 animate-pulse rounded-xl"
+        class="h-64 animate-pulse rounded-xl bg-slate-200"
       />
     </div>
 
@@ -45,7 +45,7 @@ useSeoMeta({
     </div>
 
     <!-- SUCCESS -->
-    <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <div v-else class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
       <PokemonCard
         v-for="p in pokemonList"
         :key="`poke-${p.id}`"

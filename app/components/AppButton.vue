@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { cn } from "~/utils";
 
-defineProps<{
-  variant?: "primary" | "danger";
-  disabled?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    variant?: "primary" | "danger";
+    disabled?: boolean;
+  }>(),
+  {
+    variant: "",
+    disabled: false,
+  },
+);
 
-const classes = cn("app-button", variant);
+const classes = computed(() => cn("app-button", props.variant));
 </script>
 
 <template>
@@ -20,7 +26,6 @@ const classes = cn("app-button", variant);
 
 .app-button {
   @apply py-2 px-4 rounded-lg text-sm font-semibold transition-all bg-slate-200 text-slate-700 hover:bg-slate-300 active:scale-95 disabled:opacity-50 disabled:active:scale-100;
-
   @include m.focus-ring;
 
   &.primary {

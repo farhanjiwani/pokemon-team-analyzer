@@ -19,18 +19,22 @@ function handleCardClick() {
   navigateTo(`/pokemon/${props.pokemon.id}`);
 }
 
-const pokeCardClass = cn(
-  "pokemon-card group",
-  props.isSelected
-    ? "border-blue-500 shadow-lg"
-    : "border-transparent shadow-sm hover:shadow-md",
+const pokeCardClass = computed(() =>
+  cn(
+    "pokemon-card group",
+    props.isSelected
+      ? "border-blue-500 shadow-lg"
+      : "border-transparent shadow-sm hover:shadow-md",
+  ),
 );
 
-const addRemoveBtnClass = cn(
-  "w-full py-2 px-4 rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200",
-  props.isSelected
-    ? "bg-red-50 text-red-600 hover:bg-red-100"
-    : "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-100 disabled:text-slate-400",
+const addRemoveBtnClass = computed(() =>
+  cn(
+    "w-full py-2 px-4 rounded-lg text-sm font-semibold transition-colors focus:outline-none focus:ring-4 focus:ring-blue-200",
+    props.isSelected
+      ? "bg-red-50 text-red-600 hover:bg-red-100"
+      : "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-slate-100 disabled:text-slate-400",
+  ),
 );
 </script>
 
@@ -44,12 +48,12 @@ const addRemoveBtnClass = cn(
     <img
       :src="pokemon.image"
       :alt="`Official artwork of ${pokemon.name}`"
-      class="w-32 h-32 object-contain group-hover:scale-110 transition-transform"
+      class="size-32 object-contain transition-transform group-hover:scale-110"
       loading="lazy"
     />
 
     <h2 class="mt-4 font-bold capitalize text-slate-800">{{ pokemon.name }}</h2>
-    <p class="text-xs text-slate-600 mb-4">#{{ pokemon.id }}</p>
+    <p class="mb-4 text-xs text-slate-600">#{{ pokemon.id }}</p>
 
     <button
       :disabled="disabled && !isSelected"
@@ -66,6 +70,6 @@ const addRemoveBtnClass = cn(
 
 .pokemon-card {
   @apply relative p-4 rounded-xl border-2 transition-all flex flex-col items-center bg-white cursor-pointer focus:outline-none focus-within:ring-2;
-  @include m.focus-ring();
+  @include m.focus-ring;
 }
 </style>

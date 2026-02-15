@@ -41,11 +41,11 @@ onUnmounted(() => {
     <Transition name="toast-slide">
       <div
         v-if="ui.isVisible"
-        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-3 p-1 pr-4 rounded-full bg-slate-900 text-white shadow-2xl border border-slate-700"
+        class="fixed bottom-6 left-1/2 z-[100] flex -translate-x-1/2 items-center gap-3 rounded-full border border-slate-700 bg-slate-900 p-1 pr-4 text-white shadow-2xl"
         role="status"
       >
         <div class="flex items-center gap-3 py-2 pl-4">
-          <span class="text-blue-400 font-bold">i</span>
+          <span class="font-bold text-blue-400">i</span>
           <span class="text-sm font-medium">{{ ui.message }}</span>
         </div>
 
@@ -54,7 +54,7 @@ onUnmounted(() => {
           class="flex items-center border-l border-slate-700 pl-3"
         >
           <button
-            class="text-sm font-bold text-blue-400 hover:text-blue-300 hover:bg-slate-800 px-3 py-1 rounded transition-colors"
+            class="rounded px-3 py-1 text-sm font-bold text-blue-400 transition-colors hover:bg-slate-800 hover:text-blue-300"
             tabindex="-1"
             @click="handleAction"
           >
@@ -76,10 +76,12 @@ onUnmounted(() => {
 .toast-slide-leave-active {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 .toast-slide-enter-from {
   transform: translate(-50%, 100px);
   opacity: 0;
 }
+
 .toast-slide-leave-to {
   transform: translate(-50%, 20px);
   opacity: 0;
