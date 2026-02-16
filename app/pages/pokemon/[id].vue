@@ -8,6 +8,8 @@ type Direction = "left" | "right";
 const teamStore = useTeamStore();
 const route = useRoute();
 
+const showStats = ref(false);
+
 // META
 definePageMeta({
   validate: async (route) => {
@@ -64,6 +66,13 @@ const navigateWithTransition = (dir: Direction, targetId: number) => {
 const toggleTeam = () => {
   teamStore.toggleMember(pokemonForTeam.value!);
 };
+
+// Animate bars
+onMounted(() => {
+  setTimeout(() => {
+    showStats.value = true;
+  }, 150);
+});
 </script>
 
 <template>
@@ -120,8 +129,12 @@ const toggleTeam = () => {
               </div>
               <div class="h-2 overflow-hidden rounded-full bg-slate-100">
                 <div
-                  class="h-full bg-blue-500 transition-all duration-1000"
-                  :style="{ width: `${(stat.base_stat / 255) * 100}%` }"
+                  class="h-full bg-blue-500 transition-all duration-1000 ease-out"
+                  :style="{
+                    width: showStats
+                      ? `${(stat.base_stat / 255) * 100}%`
+                      : '0%',
+                  }"
                 />
               </div>
             </div>

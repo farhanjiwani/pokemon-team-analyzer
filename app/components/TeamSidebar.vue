@@ -140,14 +140,16 @@ const closeButtonLabel = computed(() => {
           </div>
         </div>
 
-        <ul
+        <TransitionGroup
           v-if="teamStore.count > 0"
-          class="flex-1 space-y-4 overflow-y-auto pr-2"
+          name="list"
+          tag="ul"
+          class="relative flex-1 overflow-y-auto pr-2"
         >
           <li
             v-for="p in sortedTeam"
             :key="p.id"
-            class="flex items-center gap-4 rounded-xl border border-slate-100 bg-slate-50 p-3"
+            class="mb-4 flex w-full items-center gap-4 rounded-xl border border-slate-100 bg-slate-50 p-3"
           >
             <img :src="p.image" alt="" class="size-12 object-contain" />
             <span class="flex-1 text-sm font-bold capitalize">
@@ -175,7 +177,7 @@ const closeButtonLabel = computed(() => {
               <SR_BtnSpan />
             </button>
           </li>
-        </ul>
+        </TransitionGroup>
 
         <div
           v-else
@@ -219,5 +221,22 @@ const closeButtonLabel = computed(() => {
 .slide-rtl-enter-from,
 .slide-rtl-leave-to {
   transform: translateX(100%);
+}
+
+.list-move, /* Smoothly moves remaining items up/down */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.4s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px); /* Slides items in/out from the right */
+}
+
+/* Takes "leaving" item out of the layout flow so items below can slide up */
+.list-leave-active {
+  position: absolute;
 }
 </style>
