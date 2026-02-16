@@ -186,6 +186,12 @@ const closeButtonLabel = computed(() => {
           </p>
         </div>
 
+        <div class="mt-2 flex justify-end">
+          <AppButton class="mt-6 w-full" @click="teamStore.clearTeam()">
+            Clear entire team
+          </AppButton>
+        </div>
+
         <AppButton variant="primary" class="mt-6 w-full" @click="close">
           {{ closeButtonLabel }}
         </AppButton>

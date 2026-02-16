@@ -90,6 +90,20 @@ export const useTeamStore = defineStore(
       }
     }
 
+    function clearTeam() {
+      if (count.value === 0) return;
+
+      // Save for Undo, then empty store and trigger toast
+      const previousTeam = [...team.value];
+      team.value = [];
+      ui.notify("Your entire team was cleared.", {
+        label: "Undo",
+        callback: () => {
+          team.value = previousTeam;
+        },
+      });
+    }
+
     return {
       count,
       isFull,
@@ -99,6 +113,7 @@ export const useTeamStore = defineStore(
       isInTeam,
       removePokemon,
       toggleMember,
+      clearTeam,
     };
   },
   { persist: true },
