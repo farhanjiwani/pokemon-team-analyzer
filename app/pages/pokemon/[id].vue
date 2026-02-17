@@ -6,6 +6,7 @@ type Direction = "left" | "right";
 
 // HOOKS
 const teamStore = useTeamStore();
+const ui = useUIStore();
 const route = useRoute();
 
 const showStats = ref(false);
@@ -38,7 +39,7 @@ const { data: pokemon, status } = await useFetch<PokeAPIDetail>(
   `https://pokeapi.co/api/v2/pokemon/${pokemonId}`,
 );
 
-// This creates a "Clean" object that matches what your Store/Card expects
+// "Clean", expected object for Store/Card
 const pokemonForTeam = computed(() => {
   if (!pokemon.value) return null;
   return {
@@ -65,6 +66,27 @@ const navigateWithTransition = (dir: Direction, targetId: number) => {
 
 const toggleTeam = () => {
   teamStore.toggleMember(pokemonForTeam.value!);
+};
+
+let audio: HTMLAudioElement | null = null;
+const playCry = async () => {
+  const cryUrl = pokemon.value?.cries?.latest;
+  if (!cryUrl) return;
+
+  try {
+    // Stop and restart if already playing
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    audio = new Audio(cryUrl);
+    audio.volume = 0.5;
+    await audio.play();
+  } catch (error) {
+    console.error("Audio playback was blocked or failed:", error);
+    ui.notify("Audio playback was blocked or failed");
+  }
 };
 
 // Animate bars
@@ -105,9 +127,39 @@ onMounted(() => {
           <span class="font-mono font-bold text-blue-600"
             >#{{ pokemon.id }}</span
           >
-          <h1 class="mb-4 text-4xl font-black capitalize text-slate-900">
-            {{ pokemon.name }}
-          </h1>
+          <div class="flex items-center gap-4 pb-4">
+            <h1 class="text-4xl font-black capitalize text-slate-900">
+              {{ pokemon.name }}
+            </h1>
+
+            <button
+              v-if="pokemon.cries?.latest"
+              aria-label="Play Pokémon cry"
+              title="Play Cry"
+              :class="
+                cn(
+                  'p-2 rounded-full text-slate-400 bg-slate-100 transition-all',
+                  'hover:bg-blue-100 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500',
+                )
+              "
+              @click="playCry"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+                aria-hidden="true"
+              >
+                <path
+                  d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 0 0 1.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06ZM18.584 5.106a.75.75 0 0 1 1.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 0 1-1.06-1.06 8.25 8.25 0 0 0 0-11.668.75.75 0 0 1 0-1.06Z"
+                />
+                <path
+                  d="M15.932 7.757a.75.75 0 0 1 1.061 0 6 6 0 0 1 0 8.486.75.75 0 0 1-1.06-1.061 4.5 4.5 0 0 0 0-6.364.75.75 0 0 1 0-1.06Z"
+                />
+              </svg>
+            </button>
+          </div>
 
           <div class="mb-6 flex gap-2">
             <span
