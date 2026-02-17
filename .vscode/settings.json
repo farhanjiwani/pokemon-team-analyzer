@@ -3,6 +3,7 @@
   "scss.lint.unknownAtRules": "ignore",
   "cSpell.words": [
     "Eevee",
+    "jank",
     "nuxi",
     "Nuxt",
     "nuxtjs",

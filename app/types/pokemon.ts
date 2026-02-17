@@ -1,3 +1,5 @@
+export type { SpecCategoryKey } from "~/utils/constants";
+
 // The basic shape used in lists/sidebar
 export interface PokemonBase {
   id: number;
@@ -30,4 +32,7 @@ export interface PokeAPIDetail {
       name: string;
     };
   }>;
+  cries: {
+    latest: string;
+  };
 }

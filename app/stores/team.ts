@@ -3,9 +3,6 @@ import { useUIStore } from "./ui";
 import { capitalizeFirst } from "~/utils";
 import type { PokemonBase, PokemonStats, PokeAPIDetail } from "~/types/pokemon";
 
-// Cache type
-type PokemonStats = Record<string, number>;
-
 export const useTeamStore = defineStore(
   "team",
   () => {

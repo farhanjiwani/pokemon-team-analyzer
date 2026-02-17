@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { PokemonBase, SpecCategoryKey } from "~/types/pokemon";
 import { POKE_SPEC_CATEGORIES } from "~/utils/constants";
 
-const specCategories = Object.keys(POKE_SPEC_CATEGORIES);
-type Attribute = keyof typeof POKE_SPEC_CATEGORIES;
-type SortOption = "date" | "name" | "id" | Attribute;
+// Types
+type SortOption = "date" | "name" | "id" | SpecCategoryKey;
 
+// Hooks n' Refs
 const teamStore = useTeamStore();
 const route = useRoute();
 const sortBy = useCookie<SortOption>("team-sort-preference", {
@@ -15,10 +16,11 @@ const sortBy = useCookie<SortOption>("team-sort-preference", {
 
 const isOpen = ref(false);
 const closeBtn = ref<HTMLButtonElement | null>(null);
-let triggerElement: HTMLElement | null = null;
 
+// Emitted and Exposed
 const emit = defineEmits(["open", "close"]);
 
+let triggerElement: HTMLElement | null = null;
 const open = () => {
   // Remember modal trigger
   triggerElement = document.activeElement as HTMLElement;
@@ -41,14 +43,33 @@ const close = () => {
   });
 };
 
+defineExpose({ open });
+
+// Handlers
 const handleRemove = (id: number) => {
   teamStore.removePokemon(id);
 };
 
-defineExpose({ open });
+// Spec sort ID
+const sortedBySpec = computed(() =>
+  POKE_SPEC_CATEGORIES.find(({ id }) => id === sortBy.value),
+);
 
+// Spec sort label
+const specSortLabel = computed(() => {
+  return sortedBySpec.value ? sortedBySpec.value.label : "";
+});
+
+// Sorting logic
 const sortedTeam = computed(() => {
   const teamCopy = [...teamStore.team];
+
+  /**
+   * Looks up stats in the cache and falls back to 0 if
+   * the async fetch hasn't finished yet.
+   */
+  const getStat = (aOrB: PokemonBase) =>
+    teamStore.statsCache[aOrB.id]?.[sortBy.value] || 0;
 
   return teamCopy.sort((a, b) => {
     // Ascending ones
@@ -58,17 +79,9 @@ const sortedTeam = computed(() => {
     if (sortBy.value === "id") {
       return a.id - b.id;
     }
-
     // Else descending ones
-    if (specCategories.includes(sortBy.value)) {
-      const statKey = sortBy.value;
-
-      // Look up stats in the cache.
-      // Falls back to 0 if the async fetch hasn't finished yet.
-      const statA = teamStore.statsCache[a.id]?.[statKey] || 0;
-      const statB = teamStore.statsCache[b.id]?.[statKey] || 0;
-
-      return statB - statA;
+    if (sortedBySpec.value) {
+      return getStat(b) - getStat(a);
     }
 
     return 0; // Default: 'date'
@@ -119,11 +132,11 @@ const closeButtonLabel = computed(() => {
                 </optgroup>
                 <optgroup label="Attributes">
                   <option
-                    v-for="(cat, i) in specCategories"
-                    :key="i"
-                    :value="cat"
+                    v-for="cat in POKE_SPEC_CATEGORIES"
+                    :key="cat.id"
+                    :value="cat.id"
                   >
-                    {{ POKE_SPEC_CATEGORIES[cat] }}
+                    {{ cat.label }}
                   </option>
                 </optgroup>
               </select>
@@ -144,7 +157,7 @@ const closeButtonLabel = computed(() => {
           v-if="teamStore.count > 0"
           name="list"
           tag="ul"
-          class="relative flex-1 overflow-y-auto pr-2"
+          class="relative flex-1 overflow-y-auto overflow-x-hidden pr-2"
         >
           <li
             v-for="p in sortedTeam"
@@ -157,16 +170,12 @@ const closeButtonLabel = computed(() => {
               <br />
 
               <span
-                v-if="specCategories.includes(sortBy)"
+                v-if="sortedBySpec"
                 class="text-xs font-normal normal-case text-slate-500"
               >
-                {{ teamStore.statsCache[p.id]?.[sortBy] || "..." }}
+                {{ specSortLabel }}:
 
-                {{
-                  POKE_SPEC_CATEGORIES[
-                    sortBy as keyof typeof POKE_SPEC_CATEGORIES
-                  ]
-                }}
+                {{ teamStore.statsCache[p.id]?.[sortBy] || "..." }}
               </span>
             </span>
             <button
@@ -232,11 +241,17 @@ const closeButtonLabel = computed(() => {
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
-  transform: translateX(30px); /* Slides items in/out from the right */
+  transform: translateX(30px) scale(0.9);
 }
 
-/* Takes "leaving" item out of the layout flow so items below can slide up */
+/* Takes "leaving" item out of the layout flow so items below can slide away */
 .list-leave-active {
   position: absolute;
+  width: 100%;
+}
+
+ul {
+  /* Don't jump when the scrollbar appears */
+  scrollbar-gutter: stable;
 }
 </style>

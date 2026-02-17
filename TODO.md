@@ -2,9 +2,6 @@
 
 ## 🛠 Active TODO List
 
-- [ ] Pokémon Cries (Audio)
-  - Add a "Play Cry" button next to the name on the [id].vue page.
-  - Fetch from pokemon.cries.latest and use the Web Audio API to play.
 - [ ] Unit Testing Foundation
   - Set up vitest and @vue/test-utils.
   - Write tests for utils/index.ts (e.g., capitalizeFirst).
@@ -38,3 +35,4 @@ Alternative perspectives and solutions to keep in mind as the project grows.
 - [x] Feature: "Clear Team" function with Undo/Toast notification.
 - [x] Animation: Smooth list transitions in Sidebar (Fixed top-member jank).
 - [x] Animation: Stat bars slide from 0 to target value on mount.
+- [x] Audio: Pokémon Cries button next to the name on the [id].vue page.
